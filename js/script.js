@@ -3,13 +3,15 @@ const overview = document.querySelector(".overview");
 
 const username = "alison-ah";
 
+const reposList = document.querySelector(".repo-list");
+
 const gitUserInfo = async function () {
     const userInfo = await fetch(`https://api.github.com/users/${username}`);
     const data = await userInfo.json();
     displayUserInfo(data);
 };
 
-console.log(gitUserInfo());
+gitUserInfo();
 
 const displayUserInfo = function(data) {
     const div = document.createElement("div");
@@ -26,4 +28,20 @@ const displayUserInfo = function(data) {
         </div> 
   `;
   overview.append(div);
+  gitUserRepos();
 };
+
+const gitUserRepos = async function () {
+    const userRepos = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
+    const repos = await userRepos.json();
+    displayRepos(repos);
+};
+
+const displayRepos = function (repos) {
+    for (const repo of repos) {
+      const repoItem = document.createElement("li");
+      repoItem.classList.add("repo");
+      repoItem.innerHTML = `<h3>${repo.name}</h3>`;
+      reposList.append(repoItem);
+    }
+  };
