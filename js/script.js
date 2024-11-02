@@ -6,7 +6,8 @@ const username = "alison-ah";
 const reposList = document.querySelector(".repo-list");
 const repos = document.querySelector(".repos");
 const repoData = document.querySelector(".repo-data");
-
+const backToRepos = document.querySelector(".view-repos");
+const filterInput = document.querySelector(".filter-repos")
 
 const gitUserInfo = async function () {
     const userInfo = await fetch(`https://api.github.com/users/${username}`);
@@ -41,6 +42,7 @@ const gitUserRepos = async function () {
 };
 
 const displayRepos = function (repos) {
+    filterInput.classList.remove("hide");
     for (const repo of repos) {
       const repoItem = document.createElement("li");
       repoItem.classList.add("repo");
@@ -77,6 +79,7 @@ const displayDescription = function (repoInfo, languages) {
     repoData.innerHTML = "";
     repoData.classList.remove("hide");
     repos.classList.add("hide");
+    backToRepos.classList.remove("hide");
     const div = document.createElement("div");
     div.innerHTML = `
         <h3>Name: ${repoInfo.username}</h3>
@@ -87,3 +90,26 @@ const displayDescription = function (repoInfo, languages) {
   `;
   repoData.append(div);
 };
+
+backToRepos.addEventListener("click", function () {
+    repos.classList.remove("hide");
+    repoData.classList.add("hide");
+    backToRepos.classList.add("hide");
+}
+);
+
+//Dynamic search
+filterInput.addEventListener("input", function (e) {
+    const searchText = e.target.value;
+    const repo = document.querySelectorAll(".repo");
+    const searchLowerCase = searchText.toLowerCase();
+
+    for (const selectedRepo of repo) {
+        const repoLowerCase = selectedRepo.innerText.toLowerCase();
+        if (repoLowerCase.includes(searchLowerCase)) {
+            selectedRepo.classList.remove("hide");
+        } else {
+            selectedRepo.classList.add("hide");
+        }
+    }
+});
