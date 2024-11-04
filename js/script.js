@@ -82,7 +82,7 @@ const displayDescription = function (repoInfo, languages) {
     backToRepos.classList.remove("hide");
     const div = document.createElement("div");
     div.innerHTML = `
-        <h3>Name: ${repoInfo.username}</h3>
+        <h3>Name: ${repoInfo.name}</h3>
         <p>Description: ${repoInfo.description}</p>
         <p>Default Branch: ${repoInfo.default_branch}</p>
         <p>Languages: ${languages.join(", ")}</p>
